@@ -24,57 +24,65 @@ Project/
 ## 1. Adding files to Vivado does NOT copy them
 
 When you use "Add Sources / Add Constraints / Add Simulation Files",  
-Vivado only references the file — it does NOT create a new copy.
+Vivado only **references** the file — it does NOT make a new copy.
 
-**Recommended:**  
+**Recommended workflow:**  
 Move your file into `UnderTale.srcs/` first, then add it to Vivado.  
-This keeps paths consistent and prevents broken references.
+This keeps all paths consistent and prevents broken references.
 
 ---
 
 ## 2. Deleting files in Vivado does NOT delete the real file
 
-Removing a file from the Vivado hierarchy only removes the reference.  
-The actual file on disk still exists.
+Removing a file from Vivado’s hierarchy only removes the _reference_.  
+The actual file still remains on disk.
 
-**If you really want to delete it:**
+**If you really want to delete a file:**
 
-- Delete it from Vivado
-- Also delete the file from `UnderTale.srcs/`
+- Delete it inside Vivado
+- Also delete the actual file in `UnderTale.srcs/`
 
 ---
 
-## 3. After pulling updates: you may have to re-add files
+## 3. After pulling updates, you may need to re-add files
 
-When you pull the latest commit, updated files appear in `UnderTale.srcs/`.  
-Vivado will not automatically re-import them sometime.
+Sometimes you will get conflicts when pulling from git.  
+If you don’t care about your current progress and want to reset to the latest commit, use:
 
-**You may have to manually re-add:**
+- `git reset --hard HEAD`
+- `git clean -fdx`
 
-- Source files (HDL)
-- Constraint files (only if updated)
-- Simulation files (only if needed)
+After pulling, the updated files will appear in `UnderTale.srcs/`.  
+However, Vivado does **not always re-import** them automatically.
 
-Suggestion:  
-Just re-add "source" files unless constraints or simulation changed. And if it's error when use `git pull`, you may have to close vivado program first.
+**If some file missing**
+
+using `add file` for all items in these folder. It will add only files referenct that you have no import in vivado project yet.
+
+- Add source files: `UnderTale.srcs/sources_1/new/`
+- Add constrain files: `UnderTale.srcs/constrs_1/new/`
+- Add simulation files: `UnderTale.srcs/sim_1/new/`
+
+**Tip:**  
+If `git pull` still gives errors, try closing Vivado first.
 
 ---
 
 ## 4. Before committing, clean the `UnderTale.srcs/` folder
 
-Since everyone must re-add files after pulling, a messy folder hurts the team.  
-Keep only valid and final files inside.
+Because teammates must re-add files after pulling, a messy folder makes the project harder to use.  
+Keep only the valid and necessary files inside.
 
 **Before committing:**
 
-- Remove unused files
-- Confirm directory structure
-- Commit only the necessary HDL / XDC / sim files
+- Remove unused or temporary files
+- Check that the directory structure is correct
+- Commit only final HDL / XDC / simulation files
 
 ---
 
 # Summary
 
-Vivado uses _references_, not copies.  
-Keep all real files inside `UnderTale.srcs/`, and re-add them after pulling.  
+Vivado uses **references**, not copies.  
+Always keep the real working files inside `UnderTale.srcs/`, and re-add them after pulling updates.  
 This keeps the project clean, predictable, and easy for everyone to work with.
